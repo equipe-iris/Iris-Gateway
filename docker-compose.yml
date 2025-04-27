@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  gateway:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "${GATEWAY_PORT}:3001"
