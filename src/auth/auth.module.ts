@@ -13,8 +13,8 @@ dotenv.config();
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
+      secret: process.env.GATEWAY_JWT_SECRET,
+      signOptions: { expiresIn: process.env.GATEWAY_JWT_EXPIRES_IN },
     }),
     HttpModule,
   ],

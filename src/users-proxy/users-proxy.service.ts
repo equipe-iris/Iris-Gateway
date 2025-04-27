@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UsersProxyService {
-  private readonly baseUrl = process.env.USER_SERVICE_URL;
+  private readonly baseUrl = process.env.GATEWAY_USER_SERVICE_URL;
 
   constructor(private readonly httpService: HttpService) {}
 

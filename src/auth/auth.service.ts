@@ -12,7 +12,7 @@ interface ValidateResponse {
 
 @Injectable()
 export class AuthService {
-  private readonly userServiceUrl = process.env.USER_SERVICE_URL;
+  private readonly userServiceUrl = process.env.GATEWAY_USER_SERVICE_URL;
 
   constructor(
     private readonly httpService: HttpService,
