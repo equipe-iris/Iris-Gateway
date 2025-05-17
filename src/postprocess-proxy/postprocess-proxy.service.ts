@@ -1,0 +1,63 @@
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom, map } from 'rxjs';
+
+@Injectable()
+export class PostprocessProxyService {
+  private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
+
+  constructor(private readonly http: HttpService) {}
+
+  private request(method: 'get' | 'post', path: string, data?: any) {
+    const url = `${this.baseUrl}${path}`;
+    const obs = this.http
+      .request({ method, url, data })
+      .pipe(map(res => res.data));
+    return lastValueFrom(obs);
+  }
+
+  // Dashboard
+  getCards() {
+    return this.request('get', '/dashboard/cards');
+  }
+  getCategories() {
+    return this.request('get', '/dashboard/categories');
+  }
+  getSatisfactionScore(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/satisfaction-score?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getDailySatisfaction(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/daily-satisfaction?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getAverageServiceTime(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/average-service-time?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getOpenTickets() {
+    return this.request('get', '/dashboard/open-tickets');
+  }
+
+  // Files
+  uploadFile(body: any) {
+    return this.request('post', '/files/upload', body);
+  }
+  getPendingFiles() {
+    return this.request('get', '/files/pending-files');
+  }
+  getProcessedFiles() {
+    return this.request('get', '/files/processed-files');
+  }
+
+  // Tickets
+  getProcessedTickets() {
+    return this.request('get', '/tickets/processed-tickets');
+  }
+}
