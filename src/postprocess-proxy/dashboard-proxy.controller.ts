@@ -41,13 +41,11 @@ export class DashboardProxyController {
   }
 
   @Get('average-service-time')
-  @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
-  @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'months', required: true, description: 'int describing the number of months. 0 for all time' })
   getAverageServiceTime(
-    @Query('start_date') start: string,
-    @Query('end_date') end: string,
+    @Query('months') months: number,
   ) {
-    return this.svc.getAverageServiceTime(start, end);
+    return this.svc.getAverageServiceTime(months);
   }
 
   @Get('open-tickets')
