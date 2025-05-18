@@ -8,7 +8,7 @@ export class PostprocessProxyService {
 
   constructor(private readonly http: HttpService) {}
 
-  private request(method: 'get' | 'post', path: string, data?: any) {
+  private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
     const obs = this.http
       .request({ method, url, data })
@@ -35,10 +35,10 @@ export class PostprocessProxyService {
       `/dashboard/daily-satisfaction?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
-  getAverageServiceTime(start: string, end: string) {
+  getAverageServiceTime(months: number) {
     return this.request(
       'get',
-      `/dashboard/average-service-time?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/average-service-time?months=${encodeURIComponent(months)}`,
     );
   }
   getOpenTickets() {
@@ -59,5 +59,14 @@ export class PostprocessProxyService {
   // Tickets
   getProcessedTickets() {
     return this.request('get', '/tickets/processed-tickets');
+  }
+
+  // Settings
+  getAstGoal() {
+    return this.request('get', '/settings/ast-goal');
+  }
+
+  updateAstGoal(body: any) {
+    return this.request('put', '/settings/update-ast-goal', body);
   }
 }

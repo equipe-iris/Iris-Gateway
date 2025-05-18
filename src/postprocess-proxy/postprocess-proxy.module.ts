@@ -5,6 +5,7 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 import { DashboardProxyController } from './dashboard-proxy.controller';
 import { FilesProxyController } from './files-proxy.controller';
 import { TicketsProxyController } from './tickets-proxy.controller';
+import { SettingsProxyController } from './settings-proxy.controller';
 
 @Module({
   imports: [HttpModule, AuthModule],
@@ -13,6 +14,7 @@ import { TicketsProxyController } from './tickets-proxy.controller';
     DashboardProxyController,
     FilesProxyController,
     TicketsProxyController,
+    SettingsProxyController
   ],
   exports: [PostprocessProxyService],
 })
