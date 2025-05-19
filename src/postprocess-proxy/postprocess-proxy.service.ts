@@ -6,7 +6,7 @@ import { lastValueFrom, map } from 'rxjs';
 export class PostprocessProxyService {
   private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
 
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService) { }
 
   private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
@@ -20,8 +20,11 @@ export class PostprocessProxyService {
   getCards() {
     return this.request('get', '/dashboard/cards');
   }
-  getCategories() {
-    return this.request('get', '/dashboard/categories');
+  getCategories(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/categories?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`
+    );
   }
   getSatisfactionScore(start: string, end: string) {
     return this.request(
