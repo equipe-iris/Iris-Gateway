@@ -8,7 +8,7 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 @Controller('gateway/dashboard')
 @UseGuards(AuthGuard('jwt'))
 export class DashboardProxyController {
-  constructor(private svc: PostprocessProxyService) { }
+  constructor(private svc: PostprocessProxyService) {}
 
   @Get('cards')
   getCards() {
@@ -25,31 +25,33 @@ export class DashboardProxyController {
     return this.svc.getCategories(start, end);
   }
 
-  @Get('satisfaction-score')
+  @Get('emotions')
   @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
-  getSatisfactionScore(
+  getEmotions(
     @Query('start_date') start: string,
     @Query('end_date') end: string,
   ) {
-    return this.svc.getSatisfactionScore(start, end);
+    return this.svc.getEmotions(start, end);
   }
 
-  @Get('daily-satisfaction')
+  @Get('daily-emotion')
   @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
-  getDailySatisfaction(
+  getDailyEmotion(
     @Query('start_date') start: string,
     @Query('end_date') end: string,
   ) {
-    return this.svc.getDailySatisfaction(start, end);
+    return this.svc.getDailyEmotion(start, end);
   }
 
   @Get('average-service-time')
-  @ApiQuery({ name: 'months', required: true, description: 'int describing the number of months. 0 for all time' })
-  getAverageServiceTime(
-    @Query('months') months: number,
-  ) {
+  @ApiQuery({
+    name: 'months',
+    required: true,
+    description: 'int describing the number of months. 0 for all time',
+  })
+  getAverageServiceTime(@Query('months') months: number) {
     return this.svc.getAverageServiceTime(months);
   }
 

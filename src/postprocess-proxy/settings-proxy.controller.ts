@@ -8,7 +8,7 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 @Controller('gateway/settings')
 @UseGuards(AuthGuard('jwt'))
 export class SettingsProxyController {
-  constructor(private svc: PostprocessProxyService) { }
+  constructor(private svc: PostprocessProxyService) {}
 
   @Get('ast-goal')
   getCards() {
@@ -16,7 +16,11 @@ export class SettingsProxyController {
   }
 
   @Put('update-ast-goal')
-  @ApiResponse({ status: 200, description: 'Updates the average service time goal, returns a message with the updated value' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Updates the average service time goal, returns a message with the updated value',
+  })
   updateAstGoal(@Body() body: any) {
     return this.svc.updateAstGoal(body);
   }

@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PostprocessProxyService } from '../postprocess-proxy/postprocess-proxy.service';
 import axios from 'axios';
 import * as FormData from 'form-data';
@@ -8,14 +12,19 @@ export class IaProxyService {
   private readonly baseUrl = process.env.GATEWAY_IA_SERVICE;
   constructor(private readonly postprocessProxy: PostprocessProxyService) {}
 
-  async predict(files: Express.Multer.File[], authHeader: string): Promise<any> {
+  async predict(
+    files: Express.Multer.File[],
+    authHeader: string,
+  ): Promise<any> {
     if (!files || files.length === 0) {
       throw new BadRequestException('No files provided');
     }
 
     const fileIds: string[] = [];
     for (const file of files) {
-      const res = await this.postprocessProxy.uploadFile({ name: file.originalname });
+      const res = await this.postprocessProxy.uploadFile({
+        name: file.originalname,
+      });
       fileIds.push(res.file_id.toString());
       console.log(`Uploaded ${file.originalname} => id ${res.file_id}`);
     }
@@ -43,7 +52,9 @@ export class IaProxyService {
       return response.data;
     } catch (err: any) {
       const msg = err.response?.data || err.message;
-      throw new InternalServerErrorException(`IA service error: ${JSON.stringify(msg)}`);
+      throw new InternalServerErrorException(
+        `IA service error: ${JSON.stringify(msg)}`,
+      );
     }
   }
 }

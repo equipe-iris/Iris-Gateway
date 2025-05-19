@@ -6,13 +6,13 @@ import { lastValueFrom, map } from 'rxjs';
 export class PostprocessProxyService {
   private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
 
-  constructor(private readonly http: HttpService) { }
+  constructor(private readonly http: HttpService) {}
 
   private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
     const obs = this.http
       .request({ method, url, data })
-      .pipe(map(res => res.data));
+      .pipe(map((res) => res.data));
     return lastValueFrom(obs);
   }
 
@@ -23,19 +23,19 @@ export class PostprocessProxyService {
   getCategories(start: string, end: string) {
     return this.request(
       'get',
-      `/dashboard/categories?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`
+      `/dashboard/categories?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
-  getSatisfactionScore(start: string, end: string) {
+  getEmotions(start: string, end: string) {
     return this.request(
       'get',
-      `/dashboard/satisfaction-score?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/emotions?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
-  getDailySatisfaction(start: string, end: string) {
+  getDailyEmotion(start: string, end: string) {
     return this.request(
       'get',
-      `/dashboard/daily-satisfaction?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/daily-emotion?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
   getAverageServiceTime(months: number) {
