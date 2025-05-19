@@ -14,7 +14,7 @@ import { SettingsProxyController } from './settings-proxy.controller';
     DashboardProxyController,
     FilesProxyController,
     TicketsProxyController,
-    SettingsProxyController
+    SettingsProxyController,
   ],
   exports: [PostprocessProxyService],
 })

@@ -1,10 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiBody,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -19,7 +14,14 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: 'JWT token returned',
-    schema: { example: { token: 'eyJhbGciOiJIUzI1NiIsInR5cCI...', id: 'oreoivbroeiv...', name: 'Pedro Alvis', role: 'ADMIN'} },
+    schema: {
+      example: {
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI...',
+        id: 'oreoivbroeiv...',
+        name: 'Pedro Alvis',
+        role: 'ADMIN',
+      },
+    },
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   login(@Body() dto: LoginDto) {

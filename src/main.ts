@@ -8,7 +8,9 @@ async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('API Gateway')
@@ -21,7 +23,7 @@ async function bootstrap() {
 
   const allowed = (process.env.GATEWAY_ALLOWED_ORIGINS || '')
     .split(',')
-    .map(origin => origin.trim())
+    .map((origin) => origin.trim())
     .filter(Boolean);
   app.enableCors({
     origin: allowed,
