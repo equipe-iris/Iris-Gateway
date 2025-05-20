@@ -8,7 +8,7 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 @Controller('gateway/dashboard')
 @UseGuards(AuthGuard('jwt'))
 export class DashboardProxyController {
-  constructor(private svc: PostprocessProxyService) {}
+  constructor(private svc: PostprocessProxyService) { }
 
   @Get('cards')
   getCards() {
@@ -58,5 +58,15 @@ export class DashboardProxyController {
   @Get('open-tickets')
   getOpenTickets() {
     return this.svc.getOpenTickets();
+  }
+
+  @Get('daily-tickets')
+  @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
+  getDailyTickets(
+    @Query('start_date') start: string,
+    @Query('end_date') end: string,
+  ) {
+    return this.svc.getDailyTickets(start, end);
   }
 }
