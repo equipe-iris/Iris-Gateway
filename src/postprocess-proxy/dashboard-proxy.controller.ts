@@ -10,9 +10,17 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 export class DashboardProxyController {
   constructor(private svc: PostprocessProxyService) { }
 
-  @Get('cards')
-  getCards() {
-    return this.svc.getCards();
+  @Get('total-tickets')
+  getTotalTickets() {
+    return this.svc.getTotalTickets();
+  }
+
+  @Get('tickets')
+  @ApiQuery({ name: 'date', required: true, description: 'YYYY-MM-DD' })
+  getTicketsByDate(
+    @Query('date') date: string,
+  ) {
+    return this.svc.getTicketsByDate(date);
   }
 
   @Get('categories')

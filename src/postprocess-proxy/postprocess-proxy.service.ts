@@ -17,8 +17,14 @@ export class PostprocessProxyService {
   }
 
   // Dashboard
-  getCards() {
-    return this.request('get', '/dashboard/cards');
+  getTotalTickets() {
+    return this.request('get', '/dashboard/total-tickets');
+  }
+  getTicketsByDate(date: string) {
+    return this.request(
+      'get',
+      `/dashboard/tickets?date=${encodeURIComponent(date)}`,
+    );  
   }
   getCategories(start: string, end: string) {
     return this.request(
