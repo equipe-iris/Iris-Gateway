@@ -6,7 +6,7 @@ import { lastValueFrom, map } from 'rxjs';
 export class PostprocessProxyService {
   private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
 
-  constructor(private readonly http: HttpService) { }
+  constructor(private readonly http: HttpService) {}
 
   private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
@@ -24,7 +24,7 @@ export class PostprocessProxyService {
     return this.request(
       'get',
       `/dashboard/tickets?date=${encodeURIComponent(date)}`,
-    );  
+    );
   }
   getCategories(start: string, end: string) {
     return this.request(
@@ -50,14 +50,11 @@ export class PostprocessProxyService {
       `/dashboard/average-service-time?months=${encodeURIComponent(months)}`,
     );
   }
-  getOpenTickets() {
-    return this.request('get', '/dashboard/open-tickets');
-  }
   getDailyTickets(start: string, end: string) {
     return this.request(
       'get',
       `/dashboard/daily-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
-    )
+    );
   }
 
   // Files
@@ -72,8 +69,41 @@ export class PostprocessProxyService {
   }
 
   // Tickets
-  getProcessedTickets() {
-    return this.request('get', '/tickets/processed-tickets');
+  getProcessedTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/processed-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getOpenTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/open-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getClosedTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/closed-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getTicketsByEmotion(start: string, end: string, emotion: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-emotion?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}&emotion=${encodeURIComponent(emotion)}`,
+    );
+  }
+  getTicketsByCategory(start: string, end: string, category: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-category?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}&category=${encodeURIComponent(category)}`,
+    );
+  }
+  getTicketsByMonth(month: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-month?month=${encodeURIComponent(month)}`,
+    );
   }
 
   // Settings
