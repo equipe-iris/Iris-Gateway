@@ -69,4 +69,9 @@ export class TicketsProxyController {
   getTicketsByMonth(@Query('month') month: string) {
     return this.svc.getTicketsByMonth(month);
   }
+
+  @Get('by-id/:ticket_id')
+  getTicketById(@Query('ticket_id') ticket_id: string) {
+    return this.svc.getTicketById(ticket_id);
+  }
 }

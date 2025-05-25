@@ -6,7 +6,7 @@ import { lastValueFrom, map } from 'rxjs';
 export class PostprocessProxyService {
   private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
 
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService) { }
 
   private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
@@ -104,6 +104,9 @@ export class PostprocessProxyService {
       'get',
       `/tickets/tickets-by-month?month=${encodeURIComponent(month)}`,
     );
+  }
+  getTicketById(id: string) {
+    return this.request('get', `/tickets/by-id/${encodeURIComponent(id)}`);
   }
 
   // Settings
