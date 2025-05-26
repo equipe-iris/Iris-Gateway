@@ -10,6 +10,8 @@ import * as FormData from 'form-data';
 @Injectable()
 export class IaProxyService {
   private readonly queueServiceUrl = process.env.GATEWAY_QUEUE_SERVICE;
+  private readonly iaServiceUrl = process.env.GATEWAY_IA_SERVICE;
+  
   constructor(private readonly postprocessProxy: PostprocessProxyService) {}
 
   async predict(
@@ -54,6 +56,37 @@ export class IaProxyService {
       const msg = err.response?.data || err.message;
       throw new InternalServerErrorException(
         `Queue service error: ${JSON.stringify(msg)}`,
+      );
+    }
+  }
+
+  async semanticSearch(query: string): Promise<any[]> {
+    if (!query || query.trim() === '') {
+      throw new BadRequestException('Query parameter is required');
+    }
+
+    try {
+      const response = await axios.post(
+        `${this.iaServiceUrl}/semantic-search/search`,
+        { query },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      
+      return response.data;
+    } catch (err: any) {
+      const msg = err.response?.data || err.message;
+      const status = err.response?.status;
+      
+      if (status === 400) {
+        throw new BadRequestException(`IA service error: ${JSON.stringify(msg)}`);
+      }
+      
+      throw new InternalServerErrorException(
+        `IA service error: ${JSON.stringify(msg)}`,
       );
     }
   }
