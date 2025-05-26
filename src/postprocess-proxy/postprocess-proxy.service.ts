@@ -6,43 +6,55 @@ import { lastValueFrom, map } from 'rxjs';
 export class PostprocessProxyService {
   private readonly baseUrl = process.env.GATEWAY_POST_PROCESS_URL;
 
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService) { }
 
-  private request(method: 'get' | 'post', path: string, data?: any) {
+  private request(method: 'get' | 'post' | 'put', path: string, data?: any) {
     const url = `${this.baseUrl}${path}`;
     const obs = this.http
       .request({ method, url, data })
-      .pipe(map(res => res.data));
+      .pipe(map((res) => res.data));
     return lastValueFrom(obs);
   }
 
   // Dashboard
-  getCards() {
-    return this.request('get', '/dashboard/cards');
+  getTotalTickets() {
+    return this.request('get', '/dashboard/total-tickets');
   }
-  getCategories() {
-    return this.request('get', '/dashboard/categories');
-  }
-  getSatisfactionScore(start: string, end: string) {
+  getTicketsByDate(date: string) {
     return this.request(
       'get',
-      `/dashboard/satisfaction-score?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/tickets?date=${encodeURIComponent(date)}`,
     );
   }
-  getDailySatisfaction(start: string, end: string) {
+  getCategories(start: string, end: string) {
     return this.request(
       'get',
-      `/dashboard/daily-satisfaction?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/categories?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
-  getAverageServiceTime(start: string, end: string) {
+  getEmotions(start: string, end: string) {
     return this.request(
       'get',
-      `/dashboard/average-service-time?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+      `/dashboard/emotions?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
     );
   }
-  getOpenTickets() {
-    return this.request('get', '/dashboard/open-tickets');
+  getDailyEmotion(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/daily-emotion?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getAverageServiceTime(months: number) {
+    return this.request(
+      'get',
+      `/dashboard/average-service-time?months=${encodeURIComponent(months)}`,
+    );
+  }
+  getDailyTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/dashboard/daily-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
   }
 
   // Files
@@ -57,7 +69,52 @@ export class PostprocessProxyService {
   }
 
   // Tickets
-  getProcessedTickets() {
-    return this.request('get', '/tickets/processed-tickets');
+  getProcessedTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/processed-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getOpenTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/open-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getClosedTickets(start: string, end: string) {
+    return this.request(
+      'get',
+      `/tickets/closed-tickets?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}`,
+    );
+  }
+  getTicketsByEmotion(start: string, end: string, emotion: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-emotion?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}&emotion=${encodeURIComponent(emotion)}`,
+    );
+  }
+  getTicketsByCategory(start: string, end: string, category: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-category?start_date=${encodeURIComponent(start)}&end_date=${encodeURIComponent(end)}&category=${encodeURIComponent(category)}`,
+    );
+  }
+  getTicketsByMonth(month: string) {
+    return this.request(
+      'get',
+      `/tickets/tickets-by-month?month=${encodeURIComponent(month)}`,
+    );
+  }
+  getTicketById(id: string) {
+    return this.request('get', `/tickets/by-id/${encodeURIComponent(id)}`);
+  }
+
+  // Settings
+  getAstGoal() {
+    return this.request('get', '/settings/ast-goal');
+  }
+
+  updateAstGoal(body: any) {
+    return this.request('put', '/settings/update-ast-goal', body);
   }
 }

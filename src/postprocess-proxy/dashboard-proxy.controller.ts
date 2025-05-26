@@ -10,48 +10,64 @@ import { PostprocessProxyService } from './postprocess-proxy.service';
 export class DashboardProxyController {
   constructor(private svc: PostprocessProxyService) {}
 
-  @Get('cards')
-  getCards() {
-    return this.svc.getCards();
+  @Get('total-tickets')
+  getTotalTickets() {
+    return this.svc.getTotalTickets();
+  }
+
+  @Get('tickets')
+  @ApiQuery({ name: 'date', required: true, description: 'YYYY-MM-DD' })
+  getTicketsByDate(@Query('date') date: string) {
+    return this.svc.getTicketsByDate(date);
   }
 
   @Get('categories')
-  getCategories() {
-    return this.svc.getCategories();
-  }
-
-  @Get('satisfaction-score')
   @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
-  getSatisfactionScore(
+  getCategories(
     @Query('start_date') start: string,
     @Query('end_date') end: string,
   ) {
-    return this.svc.getSatisfactionScore(start, end);
+    return this.svc.getCategories(start, end);
   }
 
-  @Get('daily-satisfaction')
+  @Get('emotions')
   @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
-  getDailySatisfaction(
+  getEmotions(
     @Query('start_date') start: string,
     @Query('end_date') end: string,
   ) {
-    return this.svc.getDailySatisfaction(start, end);
+    return this.svc.getEmotions(start, end);
+  }
+
+  @Get('daily-emotion')
+  @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
+  getDailyEmotion(
+    @Query('start_date') start: string,
+    @Query('end_date') end: string,
+  ) {
+    return this.svc.getDailyEmotion(start, end);
   }
 
   @Get('average-service-time')
+  @ApiQuery({
+    name: 'months',
+    required: true,
+    description: 'int describing the number of months. 0 for all time',
+  })
+  getAverageServiceTime(@Query('months') months: number) {
+    return this.svc.getAverageServiceTime(months);
+  }
+
+  @Get('daily-tickets')
   @ApiQuery({ name: 'start_date', required: true, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'end_date', required: true, description: 'YYYY-MM-DD' })
-  getAverageServiceTime(
+  getDailyTickets(
     @Query('start_date') start: string,
     @Query('end_date') end: string,
   ) {
-    return this.svc.getAverageServiceTime(start, end);
-  }
-
-  @Get('open-tickets')
-  getOpenTickets() {
-    return this.svc.getOpenTickets();
+    return this.svc.getDailyTickets(start, end);
   }
 }
