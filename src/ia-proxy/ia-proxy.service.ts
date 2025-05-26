@@ -9,7 +9,7 @@ import * as FormData from 'form-data';
 
 @Injectable()
 export class IaProxyService {
-  private readonly baseUrl = process.env.GATEWAY_IA_SERVICE;
+  private readonly queueServiceUrl = process.env.GATEWAY_QUEUE_SERVICE;
   constructor(private readonly postprocessProxy: PostprocessProxyService) {}
 
   async predict(
@@ -45,7 +45,7 @@ export class IaProxyService {
 
     try {
       const response = await axios.post(
-        `${this.baseUrl}/classification/predict`,
+        `${this.queueServiceUrl}/enqueue`,
         form,
         { headers },
       );
@@ -53,7 +53,7 @@ export class IaProxyService {
     } catch (err: any) {
       const msg = err.response?.data || err.message;
       throw new InternalServerErrorException(
-        `IA service error: ${JSON.stringify(msg)}`,
+        `Queue service error: ${JSON.stringify(msg)}`,
       );
     }
   }
