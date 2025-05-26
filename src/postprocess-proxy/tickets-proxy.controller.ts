@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PostprocessProxyService } from './postprocess-proxy.service';
@@ -71,7 +71,7 @@ export class TicketsProxyController {
   }
 
   @Get('by-id/:ticket_id')
-  getTicketById(@Query('ticket_id') ticket_id: string) {
+  getTicketById(@Param('ticket_id') ticket_id: string) {
     return this.svc.getTicketById(ticket_id);
   }
 }
